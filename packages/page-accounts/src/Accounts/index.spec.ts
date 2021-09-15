@@ -7,14 +7,7 @@ import BN from 'bn.js';
 import i18next from '@polkadot/react-components/i18n';
 import toShortAddress from '@polkadot/react-components/util/toShortAddress';
 import { AddressFlags } from '@polkadot/react-hooks/types';
-import {
-  anAccountWithBalance,
-  anAccountWithBalanceAndMeta,
-  anAccountWithInfo,
-  anAccountWithInfoAndMeta,
-  anAccountWithMeta,
-  anAccountWithStaking
-} from '@polkadot/test-support/creation/account';
+import { anAccountWithBalance, anAccountWithBalanceAndMeta, anAccountWithInfo, anAccountWithInfoAndMeta, anAccountWithMeta, anAccountWithStaking } from '@polkadot/test-support/creation/account';
 import { makeStakingLedger as ledger } from '@polkadot/test-support/creation/stakingInfo/stakingLedger';
 import { alice, MemoryStore } from '@polkadot/test-support/keyring';
 import { Table } from '@polkadot/test-support/pagesElements';
@@ -494,78 +487,79 @@ describe('Accounts page', () => {
   });
 
   describe('badges', () => {
-    let accountRows: AccountRow[]
+    let accountRows: AccountRow[];
+
     beforeEach(async () => {
       accountsPage.renderAccountsWithDefaultAddresses(
-        anAccountWithInfoAndMeta({flags: {isDevelopment: true} as AddressFlags}, { name: 'alice' }),
+        anAccountWithInfoAndMeta({ flags: { isDevelopment: true } as AddressFlags }, { name: 'alice' }),
         anAccountWithMeta({ name: 'bob' }),
-        anAccountWithInfoAndMeta({flags: {isDevelopment: true} as AddressFlags}, { name: 'charlie', genesisHash: 'someHash' }),
+        anAccountWithInfoAndMeta({ flags: { isDevelopment: true } as AddressFlags }, { genesisHash: 'someHash', name: 'charlie' })
       );
-      accountRows = await accountsPage.getAccountRows()
-    })
+      accountRows = await accountsPage.getAccountRows();
+    });
     describe('when genesis hash is not set', () => {
       describe('when isDevelopment flag', () => {
-        let aliceRow: AccountRow
+        let aliceRow: AccountRow;
 
         beforeEach(async () => {
-          aliceRow = accountRows[0]
-          await aliceRow.assertAccountName('ALICE')
-        })
+          aliceRow = accountRows[0];
+          await aliceRow.assertAccountName('ALICE');
+        });
 
         it('the development badge is displayed', async () => {
-          await aliceRow.assertBadge('orange-wrench')
-        })
+          await aliceRow.assertBadge('orange-wrench');
+        });
 
-        it('the all networks badge is not displayed', async () => {
-          await aliceRow.assertNoBadge('orange-exclamation-triangle')
-        })
+        it('the all networks badge is not displayed', () => {
+          aliceRow.assertNoBadge('orange-exclamation-triangle');
+        });
 
-        it('the regular badge is not displayed', async () => {
-          await aliceRow.assertNoBadge('transparent-')
-        })
-      })
+        it('the regular badge is not displayed', () => {
+          aliceRow.assertNoBadge('transparent-');
+        });
+      });
 
       describe('when no isDevelopment flag', () => {
-        let bobRow: AccountRow
+        let bobRow: AccountRow;
 
         beforeEach(async () => {
-          bobRow = accountRows[1]
-          await bobRow.assertAccountName('BOB')
-        })
+          bobRow = accountRows[1];
+          await bobRow.assertAccountName('BOB');
+        });
 
-        it('the development badge is not displayed', async () => {
-          await bobRow.assertNoBadge('orange-wrench')
-        })
+        it('the development badge is not displayed', () => {
+          bobRow.assertNoBadge('orange-wrench');
+        });
 
         it('the all networks badge is displayed', async () => {
-          await bobRow.assertBadge('orange-exclamation-triangle')
-        })
+          await bobRow.assertBadge('orange-exclamation-triangle');
+        });
 
-        it('the regular badge is not displayed', async () => {
-          await bobRow.assertNoBadge('transparent-')
-        })
-      })
-    })
+        it('the regular badge is not displayed', () => {
+          bobRow.assertNoBadge('transparent-');
+        });
+      });
+    });
 
     describe('when genesis hash set', () => {
-      let charlieRow: AccountRow
+      let charlieRow: AccountRow;
 
       beforeEach(async () => {
-        charlieRow = accountRows[2]
-        await charlieRow.assertAccountName('CHARLIE')
-      })
+        charlieRow = accountRows[2];
+        await charlieRow.assertAccountName('CHARLIE');
+      });
 
-      it('the development badge is not displayed', async () => {
-        await charlieRow.assertNoBadge('orange-wrench')
-      })
+      it('the development badge is not displayed', () => {
+        charlieRow.assertNoBadge('orange-wrench');
+      });
 
-      it('the all networks badge is not displayed', async () => {
-        await charlieRow.assertNoBadge('orange-exclamation-triangle')
-      })
+      it('the all networks badge is not displayed', () => {
+        charlieRow.assertNoBadge('orange-exclamation-triangle');
+      });
 
       it('the regular badge is displayed', async () => {
-        await charlieRow.assertBadge('transparent')
-      })
-    })
-  })
+        await charlieRow.assertBadge('transparent');
+      });
+    });
+  });
 });
